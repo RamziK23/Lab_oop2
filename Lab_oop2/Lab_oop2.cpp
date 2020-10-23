@@ -24,7 +24,7 @@ public:
 		y = p.y;
 	}
 	~Point() {
-		printf("Удаление точки с координатами %d, %d\n", x, y);                  //диструктор
+		printf("Удаление точки с координатами %d, %d\n", x, y);                  //диструктор точки
 	}
 	void move(int dx,int dy) {                     //метод move
 		x = x + dx;
@@ -38,7 +38,7 @@ void Point::reset() {
 	y = 0;
 }
 
-class ColorPoint :Point {           //класс цветная точка
+class ColorPoint : public Point {           //класс цветная точка
 protected:
 	int color;
 public:
@@ -63,34 +63,34 @@ public:
 
 	}
 	~ColorPoint() {
-		printf("Удаление цветной точки с координатами %d, %d, %d\n", x, y, color);                  //диструктор
+		printf("Удаление цветной точки с координатами %d, %d, %d\n", x, y, color);                  //диструктор цветной точки
 	}
 };
 
-class Line/*: public Point */{
+class Line/*: public Point */{                                //класс линия
 protected:
 	Point *p1;
 	Point *p2;
 	int x, y, x2, y2;
 public:
 	Line() {
-		p1 = new Point;
+		p1 = new Point;                                       //конструктор линии без параметров
 		p2 = new Point;
 		printf("Пустая линия\n");
 	}
-	Line(int x, int y, int x2, int y2) {
+	Line(int x, int y, int x2, int y2) {                       //конструктор линии с параметрами
 		p1 = new Point(x, y);
 		p2 = new Point(x2, y2);
 		/*Point p1(x, y);
 		Point p2(x2, y2);*/
 		printf("Линия\n");
 	}
-	Line(const Line &l) {
+	Line(const Line &l) {                                     //конструктор линии-копии
 		printf("Линия-копия\n");
 		p1 = new Point(*(l.p1));
 		p2 = new Point(*(l.p2));
 	}
-	~Line() {
+	~Line() {                                                  //диструктор линии
 		delete p1;
 		delete p2;
 		printf("Удаление линии с координатами %d,%d,%d,%d\n", x, y, x2, y2);
@@ -125,15 +125,18 @@ printf("\n\n");
 {
 	{
 		ColorPoint cp1;
-		ColorPoint cp2(1, 2, 30);                               //статическое создание точек
+		ColorPoint cp2(1, 2, 30);                               //статическое создание цветных точек
 		ColorPoint cp3(cp2);
 	}
 	_getch();
 	printf("\n\n");
 	{
+		Point *cp = new ColorPoint(1,2,5);                      //помещение объекта в переменную другого типа
+		delete cp;
+
 		ColorPoint* cp0 = new ColorPoint();
 		ColorPoint* cp01 = new ColorPoint(5, 10, 45);
-		ColorPoint* cp02 = new ColorPoint(*cp01);                  //динамическое создание точек
+		ColorPoint* cp02 = new ColorPoint(*cp01);                  //динамическое создание цветных точек
 
 		delete cp0;
 		delete cp01;
@@ -144,14 +147,14 @@ _getch();
 printf("\n\n");
 {
 	{
-		Line l1;
+		Line l1;                                                  //статическое создание линий
 		Line l2(1, 2, 3, 4);
 		Line l3(l2);
 	}
 	_getch();
 	printf("\n\n");
 	{
-		Line* l0 = new Line();
+		Line* l0 = new Line();                                     //динамическое создание линий
 		delete l0;
 		Line* l01 = new Line(5, 10, 15, 20);
 		Line* l02 = new Line(*l01);
